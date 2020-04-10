@@ -21,7 +21,7 @@ int main(void){
 
     scanf("%d %d", &N, &S);
 
-    vector<pair<int, int>> picture(N);
+    vector<pair<int, int>> picture;
 
     for(int i = 0 ; i < N ; i ++){
         scanf("%d %d", &H, &C);
@@ -35,22 +35,40 @@ int main(void){
         min  = S;
 
     int ptr = 0;
+    int prev_height;
+    int cur_height;
 
     for(auto it = picture.begin() ; it != picture.end() ; it ++){
-        
+        cur_height = it -> first;
+
+        //printf("%d %d\n", it -> first, it -> second);
+
+        while((prev_height = picture[ptr].first) <= cur_height - S){
+            if(cur_max < dp[prev_height])
+                cur_max = dp[prev_height];
+
+                //printf("--- %d %d\n", prev_height, dp[prev_height]);
+
+            ptr ++;
+        }
+
+        dp[cur_height] = it -> second + cur_max;
+
     }
 
-        if(dp.find(i - S) != picture.end()){
-            if(cur_max < dp[i-S]){
-                cur_max = dp[i-S];
-            }
+    if(S > cur_height){
+        printf("%d", 0);
+    }
+    else{
+        cur_max = 0;
+
+        for(auto it = picture.begin() ; it != picture.end() ; it ++){
+            if(cur_max < dp[it -> first])
+                cur_max = dp[it -> first];
         }
 
-        if(picture.find(i) != picture.end()){
-            dp[i] = picture[i] + cur_max;
-        }
-
-
+        printf("%d",cur_max);
+    }
 
 
     return 0;
